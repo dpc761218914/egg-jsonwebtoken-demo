@@ -10,11 +10,11 @@ class UserAccessService extends Service {
     const { ctx, service } = this;
 
     //获取用户id
-    const userid='userid';
+    const userid=595320843;
     //根据用户id生成token
     const token=await service.actionToken.apply(userid);
     //获取用户名
-    const username='daniel';
+    const username=595320843;
     //组装hashmap参数
     var qe = {token: token, username:username};
     //将用户信息存在hashmap中，其中userid为主键，其他键值对为用户信息

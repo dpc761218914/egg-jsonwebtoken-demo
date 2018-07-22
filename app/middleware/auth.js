@@ -7,23 +7,22 @@ const Redis=require('ioredis');
 const redis=new Redis;
 
 
+
+/* eslint-disable */
 module.exports = (option, app) => {
-    return function* auth(next) {
-        yield next;
-        if(this.path=='/'||this.path=='/login'){
-            console.log('login page');
-            return;
-        }
-        else{
-           // const {ctx} = this
+    return async function auth(ctx,next) {
+        console.log(ctx.path);
+        if(ctx.path=='/'||ctx.path=='/user/login'){
+            await next();
+        }else{
             //用户传过来的token
-            const  user_token=this.query.token;
+            const  user_token=ctx.query.token;
             //用户传过来的userid
-            const  userid='userid';
+            const  userid=595320843;
             //获取用的token，在这里校验token。如果userid和token可以在redis中找到，
             // 那么久return，否则重定向到登录页面
-            // 重定向写法：tihs.redirect('/','login')
-            redis.hget(userid,'token',function(err,result){
+            // 重定向写法：this.redirect('/','login')
+            await redis.hget(userid,'token',async function(err,result){
                 if(err){
                     console.log(err);
                 }else{
@@ -32,17 +31,20 @@ module.exports = (option, app) => {
                     if(result==user_token){
                         //用户有权限
                         console.log('you have token');
+                        await next();
                     }else{
+                        console.log('you have no token');
                         //用户无权限，重定向到登录
-                        console.log('you have error token');
+                        ctx.body = {
+                            code: '0',
+                            message: '无token,请重新登入！'
+                        }
+                        ctx.status = 200;
                     }
                 }
             })
-            console.log(user_token)
-
-            console.log('need token  page');
-
         }
 
     };
 };
+

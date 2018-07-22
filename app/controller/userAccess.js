@@ -26,17 +26,17 @@ class UserAccessController extends Controller {
     //const payload = ctx.request.body || {};
     // 调用 Service 进行业务处理 get请求 url?token=XXX
     const token1=ctx.query.token;
-    const userid='userid';
+    const userid=595320843;
 
 
-    await redis.hget(userid,'token',function(err,result){
+   /* await redis.hget(userid,'token',function(err,result){
       if(err){
         console.log(err);
       }else{
         console.log('token from redis');
         console.log(result);
       }
-    })
+    })*/
     console.log('token user');
     console.log(token1);
     // 设置响应内容和响应状态码
